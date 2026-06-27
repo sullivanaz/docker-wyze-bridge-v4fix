@@ -75,6 +75,46 @@ docker-compose up -d
 docker-compose -f docker-compose.prod.yml up -d
 ```
 
+### Published Docker Image
+
+This fork publishes a multi-architecture image to GitHub Container Registry:
+
+```text
+ghcr.io/sullivanaz/docker-wyze-bridge-v4fix:latest
+```
+
+Version tags are also published from Git tags, for example:
+
+```text
+ghcr.io/sullivanaz/docker-wyze-bridge-v4fix:1.2.3
+```
+
+Example `docker-compose.yml`:
+
+```yaml
+services:
+  wyze-bridge:
+    image: ghcr.io/sullivanaz/docker-wyze-bridge-v4fix:latest
+    container_name: wyze-bridge-v4fix
+    restart: unless-stopped
+    ports:
+      - 1935:1935 # RTMP
+      - 8554:8554 # RTSP
+      - 8888:8888 # HLS
+      - 8889:8889 # WebRTC
+      - 8189:8189/udp # WebRTC/ICE
+      - 5000:5000 # Web UI
+    environment:
+      - WYZE_EMAIL=${WYZE_EMAIL}
+      - WYZE_PASSWORD=${WYZE_PASSWORD}
+      - API_ID=${API_ID}
+      - API_KEY=${API_KEY}
+      - WB_AUTH=true
+    volumes:
+      - ./config:/config
+      - ./media:/media
+```
+
 ### 4️⃣ **Celebrate! 🎉**
 - **All cameras visible** at: `http://localhost:5000`
 - **v4 cameras streaming** via WebRTC endpoints
