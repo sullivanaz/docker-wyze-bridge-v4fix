@@ -6,7 +6,8 @@ FROM python:3.12-slim-bookworm AS base
 FROM base AS builder
 ARG BUILD_DATE
 RUN apt-get update \
-    && apt-get install -y curl tar gcc \
+    && apt-get install -y ca-certificates curl tar gcc \
+    && update-ca-certificates \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 COPY ../app/ /build/app/
